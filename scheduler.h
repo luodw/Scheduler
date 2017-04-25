@@ -5,7 +5,7 @@
 #include<stdlib.h>
 
 namespace sched{
-  
+
   #define NORMAL 0
   #define DELAY 1
   #define CIRCLE 2
@@ -32,10 +32,10 @@ namespace sched{
   class Scheduler{
   public:
     Scheduler(uint maxTask);
-    int Startup();
-    int Schedule(func f,void *arg,int delay,int interval);
+    int startup();
+    int schedule(func f,void *arg,int delay,int interval);
   private:
-    static void* ScheduleLoop(void* arg);
+    static void* scheduleLoop(void* arg);
   private:
     uint maxTask;
     uint count;

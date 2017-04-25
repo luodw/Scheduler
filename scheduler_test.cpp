@@ -17,22 +17,22 @@ void* testCircle(void *arg){
 
 int main(void){
   sched::Scheduler *s=new sched::Scheduler(5);
-  int res=s->Startup();
+  int res=s->startup();
   if(res!=0){
     fprintf(stderr,"Scheduler startup error\n");
     exit(-1);
   }
-  int err = s->Schedule(testNormal,(void*)1,0,0);
+  int err = s->schedule(testNormal,(void*)1,0,0);
   if(err!=0){
     fprintf(stderr,"Schedule error\n");
     exit(-1);
   }
-  err = s->Schedule(testDelay,(void*)2,2,0);
+  err = s->schedule(testDelay,(void*)2,2,0);
   if(err!=0){
     fprintf(stderr,"Schedule error\n");
     exit(-1);
   }
-  err = s->Schedule(testCircle,(void*)3,0,5);
+  err = s->schedule(testCircle,(void*)3,0,5);
   if(err!=0){
     fprintf(stderr,"Schedule error\n");
     exit(-1);

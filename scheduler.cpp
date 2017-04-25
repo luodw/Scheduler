@@ -10,7 +10,7 @@ namespace sched{
     pthread_cond_init(&queueCond,NULL);
   }
 
-  void* Scheduler::ScheduleLoop(void *arg){
+  void* Scheduler::scheduleLoop(void *arg){
     pthread_t tid;
     Scheduler *scheduler=(Scheduler*)arg;
     while(1){
@@ -31,7 +31,7 @@ namespace sched{
     return (void*)0;
   }
 
-  int Scheduler::Schedule(func f,void *arg,int delay,int interval){
+  int Scheduler::schedule(func f,void *arg,int delay,int interval){
     if(f == NULL){
       fprintf(stderr,"[Scheduler::Schedule] schedule error, func can not be NULL!\n");
       return -1;
@@ -51,10 +51,10 @@ namespace sched{
     return 0;
   }
 
-  int Scheduler::Startup(){
+  int Scheduler::startup(){
     int err;
     pthread_t t;
-    err = ThreadWrapper::startThread(Scheduler::ScheduleLoop,(void*)this);
+    err = ThreadWrapper::startThread(Scheduler::scheduleLoop,(void*)this);
     if(err != 0){
       fprintf(stderr,"[Scheduler::Startup] pthread_create error!\n");
       return -1;
