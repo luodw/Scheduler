@@ -4,11 +4,6 @@
 #include"scheduler.h"
 
 namespace sched{
-  struct ThreadStruct{
-    func f;
-    void* arg;
-    ThreadStruct(func f,void* arg):f(f),arg(arg){}
-  };
 
   void* normalExec(Task *task);
   void* delayExec(Task *task);
