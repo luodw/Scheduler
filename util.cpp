@@ -48,7 +48,7 @@ namespace sched{
       default:
         res=(void*)-1;
     }
-    free(t);//回收内存
+    delete t;//回收内存
     return res;
   }
 

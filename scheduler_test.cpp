@@ -38,5 +38,6 @@ int main(void){
     exit(-1);
   }
   pause();
+  delete s;
   return 0;
 }
