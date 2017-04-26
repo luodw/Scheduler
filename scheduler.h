@@ -1,8 +1,10 @@
 #ifndef _SCHEDULER_
 #define _SCHEDULER_
 #include<queue>
+#include<vector>
 #include<pthread.h>
 #include<stdlib.h>
+#include<stdio.h>
 
 namespace sched{
 
@@ -11,6 +13,7 @@ namespace sched{
   #define CIRCLE 2
 
   typedef void*(*func)(void*);
+  typedef void(*rejectFunc)(void*);
 
   struct Task{
     int type;
@@ -31,16 +34,24 @@ namespace sched{
 
   class Scheduler{
   public:
-    Scheduler(uint maxTask);
+    Scheduler(uint numThread,uint maxTask);
+    Scheduler(uint numThread,uint maxTask,rejectFunc rf);
     int startup();
     int schedule(func f,void *arg,int delay,int interval);
+    int stopAll();
+    void decrCount();
   private:
     static void* scheduleLoop(void* arg);
+    Scheduler& operator=(const Scheduler&);
+    Scheduler(const Scheduler&);
   private:
+    uint currentCount;
     uint maxTask;
-    uint count;
+    uint numThread;
+    rejectFunc rejectHandler;
     pthread_mutex_t queueMutex;
     pthread_cond_t queueCond;
+    std::vector<pthread_t> tidVector;
     std::queue<Task*> taskQueue;
   };
 }

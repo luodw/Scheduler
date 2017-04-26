@@ -4,23 +4,24 @@
 #include<unistd.h>
 
 namespace sched{
-  void* normalExec(Task *task){
+  int normalExec(Task *task){
     func f=task->f;
     void* arg=task->arg;
-    return f(arg);
+    f(arg);
+    return 0;
   }
 
-  void* delayExec(Task *task){
+  int delayExec(Task *task){
     if(!task->delay){
-      return (void*)-1;
+      return -1;
     }
     sleep(task->delay);
     return normalExec(task);
   }
 
-  void* circleExec(Task *task){
+  int circleExec(Task *task){
     if(!task->interval){
-      return (void*)-1;
+      return -1;
     }
     if(!task->delay){
       sleep(task->delay);
@@ -29,46 +30,25 @@ namespace sched{
       normalExec(task);
       sleep(task->interval);
     }
-    return (void*)-1;
-  }
-
-  void* taskExec(void *arg){
-    void* res;
-    Task *t=(Task*)arg;
-    switch(t->type){
-      case NORMAL:
-        res=normalExec(t);
-        break;
-      case DELAY:
-        res=delayExec(t);
-        break;
-      case CIRCLE:
-        res=circleExec(t);
-        break;
-      default:
-        res=(void*)-1;
-    }
-    delete t;//回收内存
-    return res;
-  }
-
-  int ThreadWrapper::startThread(func f, void* arg){
-    int err=-1;
-    pthread_t tid;
-    err = pthread_create(&tid,NULL,f,arg);
-    if(err != 0){
-      return err;
-    }
-    return 0;
+    return -1;
   }
 
   int TaskWrapper::startTask(Task *task){
-    int err=-1;
-    pthread_t tid;
-    err = pthread_create(&tid,NULL,taskExec,(void*)task);
-    if(err != 0){
-      return err;
+    int res;
+    switch(task->type){
+      case NORMAL:
+        res=normalExec(task);
+        break;
+      case DELAY:
+        res=delayExec(task);
+        break;
+      case CIRCLE:
+        res=circleExec(task);
+        break;
+      default:
+        res=-1;
     }
-    return err;
+    delete task;//回收内存
+    return res;
   }
 }

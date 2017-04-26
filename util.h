@@ -5,17 +5,9 @@
 
 namespace sched{
 
-  void* normalExec(Task *task);
-  void* delayExec(Task *task);
-  void* circleExec(Task *task);
-
-  void* threadExec(void *arg);
-  void* taskExec(void* arg);
-
-  class ThreadWrapper{
-  public:
-    static int startThread(func f,void* arg);
-  };
+  int normalExec(Task *task);
+  int delayExec(Task *task);
+  int circleExec(Task *task);
 
   class TaskWrapper{
   public:
